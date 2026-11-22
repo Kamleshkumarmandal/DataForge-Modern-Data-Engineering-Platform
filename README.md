@@ -4,7 +4,7 @@
 
 DataForge is a portfolio-grade batch data platform that moves raw source files through validated Bronze, cleaned Silver, and analytics-ready Gold layers. It is designed to demonstrate the practical work behind dependable analytics: ingestion, schema validation, data quality, transformations, storage, lineage, reproducibility, and operational visibility.
 
-> **Project status:** the repository includes a runnable local batch pipeline and an optional Prefect orchestration layer. The current implementation focuses on CSV/JSONL ingestion, a mobility-trips sample dataset, Parquet storage, DuckDB analytics, quality checks, quarantine output, run manifests, Prefect flow/task tracking, task retries, and failure-attempt manifests. Cloud schedules, dbt models, PostgreSQL serving, API, and dashboard integration remain planned milestones.
+> **Project status:** the repository includes a runnable local batch pipeline, an on-demand Prefect orchestration flow, and a version-controlled Prefect deployment definition. The current implementation focuses on CSV/JSONL ingestion, a mobility-trips sample dataset, Parquet storage, DuckDB analytics, quality checks, quarantine output, run manifests, Prefect flow/task tracking, task retries, and failure-attempt manifests. The daily Prefect schedule is configured but inactive by default; registering it with Prefect Cloud and running a worker are operator setup steps. dbt models, PostgreSQL serving, API, and dashboard integration remain planned milestones.
 
 ## Why DataForge
 
@@ -69,7 +69,7 @@ CSV / JSONL source files
 | Pipeline entry point | Python CLI and optional Prefect flow |
 | Tests | pytest |
 | Quality automation | GitHub Actions |
-| Orchestration | Prefect 3 (optional local flow; managed schedules planned) |
+| Orchestration | Prefect 3 (local flow and opt-in scheduled deployment configuration) |
 | Next-stage transformations | dbt Core with DuckDB (planned) |
 | Serving layer | FastAPI and PostgreSQL (planned) |
 | User interface | React + TypeScript (planned) |
@@ -138,7 +138,7 @@ pip install -r requirements-orchestration.txt
 python -m dataforge.orchestration.cli run --input sample_data/input --output data
 ```
 
-The Prefect task retries twice (after 5 and 15 seconds) if an attempt fails. Each failed attempt writes a separate failure manifest under `data/runs/`. Local on-demand orchestration is implemented; cloud schedules and deployed workers are not yet included.
+The Prefect task retries twice (after 5 and 15 seconds) if an attempt fails. Each failed attempt writes a separate failure manifest under `data/runs/`. A version-controlled daily deployment configuration is available in `prefect.yaml`; its 06:00 Asia/Kolkata schedule is inactive by default. See [docs/PREFECT_DEPLOYMENT.md](docs/PREFECT_DEPLOYMENT.md) for work-pool creation, registration, worker startup and safe activation.
 
 Inspect the generated folders:
 
