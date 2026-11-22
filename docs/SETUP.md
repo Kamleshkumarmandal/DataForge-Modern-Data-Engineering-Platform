@@ -36,6 +36,7 @@ Install project and development dependencies:
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
+pip install -e .
 ```
 
 ## 3. Run the sample pipeline
