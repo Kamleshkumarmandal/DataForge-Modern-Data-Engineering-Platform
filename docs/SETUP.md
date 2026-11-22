@@ -41,6 +41,13 @@ pip install -e .
 
 ## 3. Run the sample pipeline
 
+The basic CLI uses the lightweight dependencies in `requirements.txt`. To use Prefect orchestration, install its optional dependencies:
+
+```bash
+pip install -r requirements-orchestration.txt
+```
+
+
 From the repository root:
 
 ```bash
@@ -81,7 +88,17 @@ with duckdb.connect("data/warehouse.duckdb", read_only=True) as connection:
     print(connection.sql("SELECT * FROM gold_daily_station_metrics").df())
 ```
 
-## 5. Run tests
+## 5. Run with Prefect orchestration
+
+The Prefect flow wraps the same batch pipeline with a tracked flow run, a tracked task run, task logs, two task retries and failure-attempt manifests.
+
+```bash
+python -m dataforge.orchestration.cli run --input sample_data/input --output data
+```
+
+Prefect can use its local ephemeral server for local execution. The first orchestration run may take longer while the local server starts. The current milestone runs flows on demand; it does not yet create a cloud schedule or a long-running worker deployment.
+
+## 6. Run tests
 
 ```bash
 pytest -q
@@ -93,7 +110,7 @@ Compile the package:
 python -m compileall -q dataforge tests
 ```
 
-## 6. Run your own files
+## 7. Run your own files
 
 Create a folder containing CSV, JSONL or NDJSON files that follow the mobility-trip contract in [METHODOLOGY.md](METHODOLOGY.md), then pass that folder to `--input`.
 
