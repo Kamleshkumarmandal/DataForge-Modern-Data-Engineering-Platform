@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Generated pipeline outputs
+data/
+*.duckdb
+*.parquet
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
