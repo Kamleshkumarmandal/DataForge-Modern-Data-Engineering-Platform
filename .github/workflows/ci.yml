@@ -18,6 +18,8 @@ jobs:
           cache: "pip"
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
+      - name: Install DataForge package
+        run: pip install -e .
       - name: Compile package
         run: python -m compileall -q dataforge tests
       - name: Run test suite
