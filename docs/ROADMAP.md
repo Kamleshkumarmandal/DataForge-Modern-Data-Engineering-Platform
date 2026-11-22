@@ -18,7 +18,10 @@
 - [ ] Add typed configuration and environment-based settings.
 - [x] Introduce a Prefect batch flow and observable pipeline task.
 - [x] Add task retries and per-attempt failure manifests.
-- [ ] Add scheduled deployments, workers and managed run history.
+- [x] Add version-controlled Prefect deployment configuration with an inactive daily schedule.
+- [ ] Register the deployment in Prefect Cloud and validate a manual scheduled-deployment run.
+- [ ] Run a persistent worker and explicitly enable recurring scheduling.
+- [ ] Add managed run history and richer operational metrics.
 - [ ] Add richer pipeline run history and structured operational metrics.
 - [ ] Add structured logs and operational metrics.
 - [ ] Add idempotent incremental ingestion checkpoints.
