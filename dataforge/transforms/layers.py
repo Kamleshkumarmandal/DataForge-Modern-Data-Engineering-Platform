@@ -92,12 +92,10 @@ def build_gold(silver_rows: pd.DataFrame) -> pd.DataFrame:
     gold = grouped.agg(
         trip_count=("trip_id", "count"),
         avg_duration_seconds=("duration_seconds", "mean"),
+        member_trip_count=("member_type", lambda values: int(values.eq("member").sum())),
+        casual_trip_count=("member_type", lambda values: int(values.eq("casual").sum())),
         unique_end_station_count=("end_station_id", "nunique"),
     ).reset_index()
-    member = grouped["member_type"].apply(lambda values: int(values.eq("member").sum())).rename("member_trip_count")
-    casual = grouped["member_type"].apply(lambda values: int(values.eq("casual").sum())).rename("casual_trip_count")
-    gold = gold.merge(member.reset_index(), on=["trip_date", "start_station_id"])
-    gold = gold.merge(casual.reset_index(), on=["trip_date", "start_station_id"])
     gold["trip_count"] = gold["trip_count"].astype("int64")
     gold["member_trip_count"] = gold["member_trip_count"].astype("int64")
     gold["casual_trip_count"] = gold["casual_trip_count"].astype("int64")
