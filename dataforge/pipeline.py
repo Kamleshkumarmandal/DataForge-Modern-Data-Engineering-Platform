@@ -99,6 +99,6 @@ def run_pipeline(input_dir: str | Path, output_dir: str | Path) -> dict[str, Any
         "data_quality": quality_summary,
         "outputs": output_paths,
     }
-    manifest_path = write_manifest(output_root, run_id, manifest)
-    manifest["manifest_path"] = str(manifest_path.relative_to(output_root))
+    manifest["manifest_path"] = f"runs/{run_id}.json"
+    write_manifest(output_root, run_id, manifest)
     return manifest
