@@ -30,7 +30,7 @@ def validate_trips(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, dic
         empty["quality_issues"] = pd.Series(dtype="string")
         return empty.copy(), empty.copy(), {"input_rows": 0, "valid_rows": 0, "rejected_rows": 0, "rejection_reasons": {}}
 
-    data = frame.copy()
+    data = frame.copy().reset_index(drop=True)
     issues: dict[object, list[str]] = {index: [] for index in data.index}
 
     text_columns = ("trip_id", "start_station_id", "end_station_id", "member_type")
