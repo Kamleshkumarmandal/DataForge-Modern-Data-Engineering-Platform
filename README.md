@@ -4,7 +4,7 @@
 
 DataForge is a portfolio-grade batch data platform that moves raw source files through validated Bronze, cleaned Silver, and analytics-ready Gold layers. It is designed to demonstrate the practical work behind dependable analytics: ingestion, schema validation, data quality, transformations, storage, lineage, reproducibility, and operational visibility.
 
-> **Project status:** the repository is being initialized with a runnable local batch-pipeline foundation. The first release focuses on CSV/JSONL ingestion, a mobility-trips sample dataset, Parquet storage, DuckDB analytics, quality checks, quarantine output, and run manifests. Prefect orchestration, dbt models, PostgreSQL serving, API, and dashboard integration are planned milestones rather than completed features.
+> **Project status:** the repository includes a runnable local batch pipeline and an optional Prefect orchestration layer. The current implementation focuses on CSV/JSONL ingestion, a mobility-trips sample dataset, Parquet storage, DuckDB analytics, quality checks, quarantine output, run manifests, Prefect flow/task tracking, task retries, and failure-attempt manifests. Cloud schedules, dbt models, PostgreSQL serving, API, and dashboard integration remain planned milestones.
 
 ## Why DataForge
 
@@ -21,6 +21,7 @@ DataForge is intentionally different from analytics and prediction applications 
 - Publish the analytics tables into a local DuckDB database.
 - Write a machine-readable run manifest with source hashes, row counts, quality outcomes, and output paths.
 - Run the pipeline from a CLI and test its data contracts.
+- Optionally orchestrate runs with Prefect flow/task tracking, retries, logs, and failed-attempt manifests.
 
 ## Architecture
 
@@ -65,10 +66,10 @@ CSV / JSONL source files
 | Ingestion / transforms | pandas |
 | Columnar storage | Apache Parquet / PyArrow |
 | Analytical database | DuckDB |
-| Pipeline entry point | Python CLI |
+| Pipeline entry point | Python CLI and optional Prefect flow |
 | Tests | pytest |
 | Quality automation | GitHub Actions |
-| Next-stage orchestration | Prefect (planned) |
+| Orchestration | Prefect 3 (optional local flow; managed schedules planned) |
 | Next-stage transformations | dbt Core with DuckDB (planned) |
 | Serving layer | FastAPI and PostgreSQL (planned) |
 | User interface | React + TypeScript (planned) |
@@ -113,6 +114,7 @@ py -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
+pip install -e .
 ```
 
 **macOS / Linux**
@@ -123,11 +125,20 @@ pip install -r requirements.txt
 pip install -r requirements-dev.txt
 ```
 
-Run the sample pipeline:
+Run the sample pipeline directly:
 
 ```bash
 python -m dataforge.cli run --input sample_data/input --output data
 ```
+
+Run the same pipeline through Prefect, with a tracked flow run, task logs and automatic retries:
+
+```bash
+pip install -r requirements-orchestration.txt
+python -m dataforge.orchestration.cli run --input sample_data/input --output data
+```
+
+The Prefect task retries twice (after 5 and 15 seconds) if an attempt fails. Each failed attempt writes a separate failure manifest under `data/runs/`. Local on-demand orchestration is implemented; cloud schedules and deployed workers are not yet included.
 
 Inspect the generated folders:
 
