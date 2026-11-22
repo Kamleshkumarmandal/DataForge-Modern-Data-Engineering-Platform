@@ -55,7 +55,7 @@ def read_source(source: SourceFile) -> pd.DataFrame:
     if source.format == "csv":
         frame = pd.read_csv(source.path, encoding="utf-8-sig")
     elif source.format in {"jsonl", "ndjson"}:
-        frame = pd.read_json(source.path, lines=True, encoding="utf-8")
+        frame = pd.read_json(source.path, lines=True, encoding="utf-8", convert_dates=False)
     else:
         raise ValueError(f"Unsupported source format: {source.format}")
 
