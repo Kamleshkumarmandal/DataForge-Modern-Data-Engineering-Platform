@@ -38,6 +38,19 @@ def run_pipeline(input_dir: str | Path, output_dir: str | Path) -> dict[str, Any
         frame = read_source(source)
         relative_path = source.path.relative_to(input_root).as_posix()
         frame = frame.copy()
+        # Keep contract fields as source text in Bronze so CSV and JSONL files
+        # have compatible Arrow types. Typed timestamps are created at the
+        # Silver quality/normalization boundary.
+        for column in (
+            "trip_id",
+            "started_at",
+            "ended_at",
+            "start_station_id",
+            "end_station_id",
+            "member_type",
+        ):
+            if column in frame:
+                frame[column] = frame[column].astype("string")
         frame["source_file"] = relative_path
         frame["source_sha256"] = source.sha256
         frame["source_row_number"] = range(1, len(frame) + 1)
