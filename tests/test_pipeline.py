@@ -18,7 +18,7 @@ def test_sample_pipeline_writes_layers_warehouse_and_manifest(tmp_path: Path):
         "bronze": 11,
         "silver": 8,
         "quarantine": 3,
-        "gold": 5,
+        "gold": 6,
     }
     assert len(result["source_files"]) == 2
     assert len(result["source_files"][0]["sha256"]) == 64
@@ -41,7 +41,7 @@ def test_sample_pipeline_writes_layers_warehouse_and_manifest(tmp_path: Path):
         connection.close()
 
     assert silver_count == 8
-    assert gold_count == 5
+    assert gold_count == 6
 
 
 def test_pipeline_fails_for_empty_input_directory(tmp_path: Path):
