@@ -1,0 +1,9 @@
+trip_id,started_at,ended_at,start_station_id,end_station_id,member_type,start_station_name,end_station_name
+trip-0001,2025-10-20T08:00:00Z,2025-10-20T08:12:00Z,ST-001,ST-002,member,Central Park,Market Street
+trip-0002,2025-10-20T08:15:00Z,2025-10-20T08:28:00Z,ST-001,ST-003,casual,Central Park,River Walk
+trip-0003,2025-10-20T09:05:00Z,2025-10-20T09:17:00Z,ST-002,ST-001,member,Market Street,Central Park
+trip-0004,2025-10-20T09:30:00Z,2025-10-20T09:48:00Z,ST-001,ST-004,member,Central Park,Library
+trip-0005,2025-10-21T07:45:00Z,2025-10-21T08:01:00Z,ST-003,ST-002,casual,River Walk,Market Street
+trip-0006,2025-10-21T08:10:00Z,2025-10-21T08:22:00Z,ST-002,ST-003,member,Market Street,River Walk
+trip-0007,not-a-timestamp,2025-10-21T10:10:00Z,ST-004,ST-001,member,Library,Central Park
+trip-0008,2025-10-21T10:30:00Z,2025-10-21T10:15:00Z,ST-004,ST-002,casual,Library,Market Street
