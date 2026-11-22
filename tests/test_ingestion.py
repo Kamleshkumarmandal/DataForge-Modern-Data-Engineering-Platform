@@ -21,8 +21,9 @@ def test_read_csv_and_jsonl(tmp_path: Path):
     csv_path.write_text("id,value\n1,alpha\n", encoding="utf-8")
     jsonl_path.write_text('{"id":2,"value":"beta"}\n', encoding="utf-8")
 
-    csv_source = discover_sources(tmp_path)[1]
-    jsonl_source = discover_sources(tmp_path)[0]
+    sources = discover_sources(tmp_path)
+    csv_source = next(source for source in sources if source.format == "csv")
+    jsonl_source = next(source for source in sources if source.format == "jsonl")
 
     assert read_source(csv_source).iloc[0]["value"] == "alpha"
     assert read_source(jsonl_source).iloc[0]["value"] == "beta"
