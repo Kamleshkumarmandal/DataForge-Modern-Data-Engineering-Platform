@@ -16,8 +16,10 @@
 
 ## Milestone 2 — Production-shaped orchestration
 - [ ] Add typed configuration and environment-based settings.
-- [ ] Introduce Prefect flows, schedules, retries and task state.
-- [ ] Add pipeline run history and failure manifests.
+- [x] Introduce a Prefect batch flow and observable pipeline task.
+- [x] Add task retries and per-attempt failure manifests.
+- [ ] Add scheduled deployments, workers and managed run history.
+- [ ] Add richer pipeline run history and structured operational metrics.
 - [ ] Add structured logs and operational metrics.
 - [ ] Add idempotent incremental ingestion checkpoints.
 
