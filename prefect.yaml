@@ -1,0 +1,42 @@
+# Prefect deployment configuration for DataForge.
+# The daily schedule is intentionally inactive until you explicitly enable it
+# in Prefect Cloud or by editing this file and redeploying.
+name: dataforge
+prefect-version: 3.9.4
+
+build: null
+push: null
+
+# Executed by the worker when a deployment run starts.
+# The repository is public, so no GitHub token is required for this pull step.
+pull:
+  - prefect.deployments.steps.git_clone:
+      id: clone-step
+      repository: https://github.com/Kamleshkumarmandal/DataForge-Modern-Data-Engineering-Platform.git
+      branch: main
+  - prefect.deployments.steps.set_working_directory:
+      directory: "{{ clone-step.directory }}"
+  - prefect.deployments.steps.pip_install_requirements:
+      directory: "{{ clone-step.directory }}"
+      requirements_file: requirements-orchestration.txt
+      stream_output: true
+
+deployments:
+  - name: dataforge-daily-batch
+    description: "Run the DataForge mobility batch pipeline every morning."
+    entrypoint: dataforge/orchestration/flows.py:dataforge_batch_flow
+    parameters:
+      input_dir: sample_data/input
+      output_dir: data/scheduled
+    tags:
+      - dataforge
+      - batch
+      - mobility
+      - portfolio
+    work_pool:
+      name: dataforge-process-pool
+      work_queue_name: default
+    schedules:
+      - cron: "0 6 * * *"
+        timezone: Asia/Kolkata
+        active: false
